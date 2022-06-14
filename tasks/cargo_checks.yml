@@ -1,0 +1,56 @@
+---
+# tasks file for cargo_checks
+
+- name: Install Rust
+  ansible.builtin.apt:
+    name: rustc
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  become: true
+  when: ansible_os_family == 'Debian'
+
+- name: Install Cargo
+  ansible.builtin.apt:
+    name: cargo
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  become: true
+  when: ansible_os_family == 'Debian'
+
+
+- name: Install diesel-cli dependencies
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  loop:
+    - libmysqlclient-dev
+    - libpq-dev
+    - libmariadbclient-dev-compat
+    - libsqlite3-dev
+  become: true
+  when: ansible_os_family == 'Debian'
+
+- name: Install sqlx dependencies
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  loop:
+    - libssl-dev
+    - pkg-config
+  become: true
+  when: ansible_os_family == 'Debian'
+
+- name: Install [sqlx](https://github.com/launchbadge/sqlx) CLI (it is used to generate database wrappers)
+  community.general.cargo:
+    name: sqlx-cli
+
+- name: Install [diesel](https://diesel.rs/) CLI (it is used for migrations management only)
+  community.general.cargo:
+    name: diesel_cli
+  become: true

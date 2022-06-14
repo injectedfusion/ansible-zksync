@@ -1,2 +1,26 @@
 ---
 # tasks file for ansible-zksync
+
+- include_tasks: docker_checks.yml
+  tags: docker_checks
+
+- include_tasks: npm_checks.yml
+  tags: npm_checks
+
+- include_tasks: yarn_checks.yml
+  tags: yarn_checks
+
+- include_tasks: axel_checks.yml
+  tags: axel_checks
+
+- include_tasks: psql_checks.yml
+  tags: psql_checks
+
+- include_tasks: cargo_checks.yml
+  tags: cargo_checks
+
+
+
+
+
+

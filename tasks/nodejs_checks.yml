@@ -1,0 +1,17 @@
+---
+# tasks file for nodejs_checks
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: "Check for Node.JS"
+  debug:
+    msg: "nodeJS NOT found"
+  when: "'nodejs' not in ansible_facts.packages"
+
+- name: Display NodeJS Version
+  debug:
+    var: ansible_facts.packages['nodejs']
+  when: "'nodejs' in ansible_facts.packages"
+
+

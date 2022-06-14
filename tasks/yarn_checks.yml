@@ -1,0 +1,8 @@
+---
+# tasks file for yarn_checks
+
+- name: Install Vue CLI node.js package
+  community.general.yarn:
+    name: "@vue/cli-service"
+    global: yes
+    state: present

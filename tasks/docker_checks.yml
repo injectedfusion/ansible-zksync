@@ -1,0 +1,27 @@
+---
+# tasks file for docker_checks
+
+- name: Check if docker is active
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  tags: check_docker
+
+- name: Ensure group "docker exists"
+  ansible.builtin.group:
+    name: docker
+    state: present
+  tags: check_docker
+
+- name: adding username to docker group
+  user:
+    name: "{{ myuser }}"
+    groups: docker
+    append: yes
+  become: true
+  become_user: root
+  become_method: sudo
+  tags: check_docker
+  notify:
+    - Restart Docker Service

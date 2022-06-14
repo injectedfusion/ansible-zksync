@@ -1,0 +1,26 @@
+---
+# tasks file for yarn_checks
+
+- name: Install Axel Dependency libc6-i386
+  ansible.builtin.apt:
+    deb: http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/libc6-i386_2.35-0ubuntu3_amd64.deb
+    # name: libc6-i386
+    # state: latest
+    # update_cache: yes
+  become: true
+  when: ansible_os_family == 'Debian'
+
+# - name: Add the Dependency apt repository libc6-i386 apt Repository for Axel
+#   ansible.builtin.apt_repository:
+#     repo: deb https://git.launchpad.net/ubuntu/+source/glibc/log/?h=ubuntu/jammy
+#     state: present
+
+- name: Install Axel
+  # Installs Latest Version 2.17.11-1
+  ansible.builtin.apt:
+    name: axel
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  become: true
+  when: ansible_os_family == 'Debian'

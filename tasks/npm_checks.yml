@@ -1,0 +1,29 @@
+---
+# tasks file for npm_checks
+
+- name: Create node symbolic Link
+  file:
+    src: "/home/{{ myuser }}/.nvm/versions/node/v16.15.1/bin//node"
+    dest: /usr/bin/node
+    state: link
+  become: true
+
+- name: Create npm symbolic link
+  file:
+    src: "/home/{{ myuser }}/.nvm/versions/node/v16.15.1/bin/npm"
+    dest: /usr/bin/npm
+    state: link
+  become: true
+
+- name: Install Yarn
+  community.general.npm:
+    name: yarn
+    global: yes
+    state: present
+
+- name: Create Yarn Symlink
+  file:
+    src: "/home/{{ myuser }}/.nvm/versions/node/v16.15.1/bin/yarn"
+    dest: /usr/bin/yarn
+    state: link
+  become: true

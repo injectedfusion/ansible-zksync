@@ -18,9 +18,3 @@
 
 - include_tasks: cargo_checks.yml
   tags: cargo_checks
-
-
-
-
-
-

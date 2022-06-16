@@ -1,0 +1,28 @@
+---
+# tasks file for drone_checks
+
+- name: Check if Drone.io CLI is already installed
+  stat:
+    path: /usr/local/bin/drone
+  register: drone_binary_check
+
+- name: Download Drone.io CLI tarball
+  get_url:
+    url: https://github.com/harness/drone-cli/releases/latest/download/drone_linux_amd64.tar.gz
+    dest: "/tmp"
+    checksum: sha256:909c214dadfb1bea36ffbcb56f836152055e9c5890aba23e88b3b2794524fe9a
+  when: not drone_binary_check.stat.exists
+
+- name: Unarchive Drone.io package and install to /usr/local/bin
+  ansible.builtin.unarchive:
+    src: "/tmp/drone_linux_amd64.tar.gz"
+    dest: /usr/local/bin
+    remote_src: yes
+    creates: /usr/local/bin/drone
+    mode: '0751'
+    owner: root
+    group: root
+    force: no
+  become: true
+  when: not drone_binary_check.stat.exists
+

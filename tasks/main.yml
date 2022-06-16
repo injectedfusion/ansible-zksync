@@ -18,3 +18,12 @@
 
 - include_tasks: cargo_checks.yml
   tags: cargo_checks
+
+- include_tasks: solc_checks.yml
+  tags: solc_checks
+
+- include_tasks: drone_checks.yml
+  tags: drone_checks.yml
+
+- include_tasks: cmake_checks.yml
+  tags: cmake_checks.yml

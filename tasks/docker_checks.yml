@@ -25,3 +25,34 @@
   tags: check_docker
   notify:
     - Restart Docker Service
+
+
+- name: Check if docker-compose is already installed
+  stat:
+    path: /usr/local/bin/docker-compose
+  register: docker_compose_check
+
+# - name: Ensure Docker Plugins directory exists
+#   ansible.builtin.file:
+#     path: "/home/{{ myuser }}/./docker/cli-plugins"
+#     mode: '0755'
+#     owner: "{{ myuser }}"
+#     group: "{{ myuser }}"
+#     state: directory
+
+
+- name: Download docker-compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64
+    dest: "/usr/local/bin/docker-compose"
+    checksum: sha256:4eb9084cd9e33d906bd1ea11b5bc2e77a43f8ffbe7228bcf7c829a7687f5c4bb
+  become: true
+  when: not docker_compose_check.stat.exists
+
+- name: Set execution permission on docker-compose
+  ansible.builtin.file:
+    path: "/usr/local/bin/docker-compose"
+    owner: root
+    group: root
+    mode: 0755
+  become: true

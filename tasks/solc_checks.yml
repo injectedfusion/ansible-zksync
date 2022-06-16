@@ -1,0 +1,9 @@
+---
+# tasks file for solc_checks
+
+- name: Install solc
+  community.general.snap:
+    name: solc
+    state: present
+  become: true
+  when: ansible_os_family == 'Debian'
